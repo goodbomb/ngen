@@ -1,4 +1,4 @@
-# nGenerate
+# nGen
 
 A basic template generator for AngularJS modular architecture.
 
