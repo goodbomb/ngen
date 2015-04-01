@@ -5,7 +5,7 @@ var expect = require('chai').expect,
 	assert = require('chai').assert,
 	path = require('path'),
 	Promise = require('bluebird'),
-	fse = Promise.promisifyAll(require('fs-extra'));
+	fse = require('fs-extra');
 
 var BaseClass = require('../lib/BaseClass.js'),
 	FileCreator = require('../lib/FileCreator.js'),
@@ -23,15 +23,13 @@ describe('FileCreator', function() {
 		appRoot = process.env.PWD,
 		libDir = appRoot + path.sep + 'lib' + path.sep,
 		modDir = appRoot + path.sep + 'modules' + path.sep,
-		moduleName = 'testModuleC';	
+		moduleName = 'testModuleC';
 	});
 
 	afterEach(function(done){
-
-		setTimeout(function(){
+		fse.remove(modDir, function() {
 			done();
-		}, 20);
-
+		});
 	});
 
 	//////////// Test 1 ////////////
@@ -42,12 +40,52 @@ describe('FileCreator', function() {
 		done();
 	});
 
-	// describe('.createModule(name)', function(){
+	describe('#createModule(name)', function(){
 
-	// 	it('should throw an exception if a package.json file is not found in the diretory tree', function(done){
-	// 		done();
-	// 	});
+		it('should create a root "modules" directory if one does not already exist', function(done){
+			var fc = new FileCreator();
 
-	// });
+			fc.on('module.root.created', function(){
+				fse.exists(modDir, function(exists) {
+					var moduleRootExists = exists ? true : false;
+					expect(moduleRootExists).to.be.true;
+					done();
+				});
+			});
+
+			fc.createModule(moduleName);
+		});
+
+		it('should create a module folder with its name passed in as an argument', function(done){
+			var fc = new FileCreator();
+
+			fc.on('module.created', function(){
+				fse.exists(modDir + moduleName, function(exists) {
+					var moduleExists = exists ? true : false;
+					expect(moduleExists).to.be.true;
+					done();
+				});
+			});
+
+			fc.createModule(moduleName);
+		});
+
+		it('should emit a "module.created" message when the module folder is created', function(done){
+			var fc = new FileCreator(),
+				emitterTriggered = false;
+
+			fc.on('module.created', function(){
+				emitterTriggered = true;
+				done();
+			}, callback);
+
+			function callback() {
+				expect(emitterTriggered).to.be.true;
+			}
+
+			fc.createModule(moduleName);
+		});
+
+	});
 
 });

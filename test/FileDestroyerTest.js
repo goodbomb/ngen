@@ -26,8 +26,15 @@ describe('FileDestroyer', function() {
 		moduleName = 'testModuleD';	
 	});
 
-	beforeEach(function(done){
-		done();
+	beforeEach(function(){
+		var fc = new FileCreator();
+		fc.createModule(moduleName);
+	});
+
+	afterEach(function(done){
+		fse.remove(modDir, function() {
+			done();
+		});
 	});
 
 	//////////// Test 1 ////////////
@@ -39,9 +46,29 @@ describe('FileDestroyer', function() {
 	});
 
 
-	describe('.destroyModule(name)', function(){
+	describe('#destroyModule(name)', function(){
 
-		
+		it('should destroy a module (by name) and all of its files', function(done){
+			var fd = new FileDestroyer();
+
+			fd.on('module.destroyed', function(){
+
+				fse.exists(modDir + moduleName, function(exists) {
+					var moduleExists = exists ? true : false;
+					expect(moduleExists).to.be.false;
+				}, done());
+
+			});
+
+			fd.destroyModule(moduleName);
+		});
+
+		// it('should return a "Module (Name) destroyed" message when successful', function(){
+		// 	var fd = new FileDestroyer();
+
+		// 	fd.destroyModule(moduleName);
+
+		// });
 
 	});
 
