@@ -36,7 +36,7 @@ program
 program
 	.command('destroy module [name]')
 	.description('Remove scaffolding for module [name]')
-	.action(function(name){		
+	.action(function(name){
 		rl.setPrompt("Are you sure you want to destroy the module '" + name + "' and all of its contents? This action cannot be undone. (Yes / No) : ");
 		rl.prompt();
 

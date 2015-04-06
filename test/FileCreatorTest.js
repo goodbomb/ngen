@@ -1,3 +1,6 @@
+/*jshint expr: true*/
+'use strict';
+
 // =======================================================================
 // Test Setup
 // =======================================================================
@@ -8,8 +11,7 @@ var expect = require('chai').expect,
 	fse = require('fs-extra');
 
 var BaseClass = require('../lib/BaseClass.js'),
-	FileCreator = require('../lib/FileCreator.js'),
-	FileDestroyer = require('../lib/FileDestroyer.js');
+	FileCreator = require('../lib/FileCreator.js');
 
 
 // =======================================================================
@@ -74,14 +76,14 @@ describe('FileCreator', function() {
 			var fc = new FileCreator(),
 				emitterTriggered = false;
 
+			function callback() {
+				expect(emitterTriggered).to.be.true;
+			}
+
 			fc.on('module.created', function(){
 				emitterTriggered = true;
 				done();
 			}, callback);
-
-			function callback() {
-				expect(emitterTriggered).to.be.true;
-			}
 
 			fc.createModule(moduleName);
 		});
