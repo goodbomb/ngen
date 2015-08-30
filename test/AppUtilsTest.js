@@ -33,23 +33,21 @@ describe('AppUtils', function() {
 		});
 
 		it('should return the nearest parent directory that has the requested file', function(done){
-			var au = new AppUtils(),
-				currentDir = process.cwd(),
+			var currentDir = process.cwd(),
 				filename = 'testFile.txt';
 
 			fse.writeFile(filename, 'Test File', function(err) {
 				if (err) console.error(err);
-				expect(au.getFileLocation(filename)).to.equal(currentDir);
+				expect(AppUtils.getFileLocation(filename)).to.equal(currentDir);
 			}, done());
 
 		});
 
 		it('should throw an error if the requested file does not exist', function() {
-			var au = new AppUtils(),
-				filename = 'does_not_exist',
+			var filename = 'does_not_exist',
 				errorMsg = 'The requested file does not exist.';
 
-			expect(au.getFileLocation.bind(au.getFileLocation, filename)).to.throw(errorMsg);
+			expect(AppUtils.getFileLocation.bind(AppUtils.getFileLocation, filename)).to.throw(errorMsg);
 		});
 
 	});
@@ -57,10 +55,9 @@ describe('AppUtils', function() {
 	describe('#capitaliseFirstLetter()', function() {
 
 		it('should capitalise the first letter of a string', function(){
-			var au = new AppUtils(),
-				string = 'test';
+			var string = 'test';
 
-				expect(au.capitaliseFirstLetter(string)).to.equal('Test');
+			expect(AppUtils.capitaliseFirstLetter(string)).to.equal('Test');
 		});
 
 	});

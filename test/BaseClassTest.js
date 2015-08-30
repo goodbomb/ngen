@@ -28,66 +28,52 @@ describe('BaseClass', function() {
 		done();
 	});
 
-	describe('.paths', function(){
+	describe('#getAppRoot()', function(){
 
-		it('should be an object containing methods', function(){
-			var bc = new BaseClass();
-			expect(bc.paths).to.be.an('object');
+		it('should return the root path of the application', function(){
+			var result = path.resolve(process.cwd());
+
+			expect(BaseClass.getAppRoot()).to.equal(result);
 		});
 
-		describe('#appRoot()', function(){
+		it('should throw an error if the app root does not exist', function(){
+			var filename = 'filename',
+				errorMsg = 'Error: A valid application root could not be found.';
 
-			it('should return the root path of the application', function(){
-				var bc = new BaseClass(),
-					result = path.resolve(process.cwd());
-
-				expect(bc.paths.appRoot()).to.equal(result);
-			});
-
-			it('should throw an error if the app root does not exist', function(){
-				var bc = new BaseClass(),
-					filename = 'filename',
-					errorMsg = 'Error: A valid application root could not be found.';
-
-				try {
-					bc.paths.appRoot(filename);
-				} catch(err) {
-					assert.equal(errorMsg, err);
-				}
-			});
-
+			try {
+				BaseClass.getAppRoot(filename);
+			} catch(err) {
+				assert.equal(errorMsg, err);
+			}
 		});
 
-		describe('#srcPath()', function(){
+	});
 
-			it('should return the source path of a template file', function(){
-				var bc = new BaseClass(),
-					filename = 'config.tpl.js',
-					result = path.resolve(process.cwd() + '/src/templates/config.tpl.js');
+	describe('#getSrcPath()', function(){
 
-				expect(bc.paths.srcPath(filename)).to.equal(result);
-			});
+		it('should return the source path of a template file', function(){
+			var filename = 'config.tpl.js',
+				result = path.resolve(process.cwd() + '/src/templates/config.tpl.js');
 
-			it('should throw an error if the source path does not exist', function(){
-				var bc = new BaseClass(),
-					filename = 'test',
-					errorMsg = 'The requested file does not exist.';
-
-				expect(bc.paths.srcPath.bind(bc.paths.srcPath, filename)).to.throw(errorMsg);
-			});
-
+			expect(BaseClass.getSrcPath(filename)).to.equal(result);
 		});
 
-		describe('#destPath()', function(){
+		it('should throw an error if the source path does not exist', function(){
+			var filename = 'test',
+				errorMsg = 'The requested file does not exist.';
 
-			it('should return the destination path for a template file', function(){
-				var bc = new BaseClass(),
-					moduleName = 'testModule',
-					result = path.resolve(process.cwd() + '/modules/' + moduleName);
+			expect(BaseClass.getSrcPath.bind(BaseClass.getSrcPath, filename)).to.throw(errorMsg);
+		});
 
-				expect(bc.paths.destPath(moduleName)).to.equal(result);
-			});
+	});
 
+	describe('#setDestPath()', function(){
+
+		it('should return the destination path for a template file', function(){
+			var moduleName = 'testModule',
+				result = path.resolve(process.cwd() + '/modules/' + moduleName);
+
+			expect(BaseClass.setDestPath(moduleName)).to.equal(result);
 		});
 
 	});
