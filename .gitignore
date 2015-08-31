@@ -12,3 +12,6 @@ node_modules
 
 # Misc
 lib/asdf.js
+
+# Webstorm Files
+.idea

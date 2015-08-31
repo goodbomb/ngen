@@ -5,8 +5,8 @@ var program = require('commander'),
 	fse = require('fs-extra'),
 	path = require('path');
 
-var FileCreator = require(libDir + 'FileCreator.js'),
-	FileDestroyer = require(libDir + 'FileDestroyer.js');
+var FileCreator = require('./lib/FileCreator.js'),
+	FileDestroyer = require('./lib/FileDestroyer.js');
 
 program
 	.version('0.0.1');

@@ -1,16 +1,15 @@
 /*jshint expr: true*/
 'use strict';
 
+process.env.NODE_ENV = 'test';
+
 // =======================================================================
 // Test Setup
 // =======================================================================
 var expect = require('chai').expect,
 	assert = require('chai').assert,
-	sinon = require('sinon'),
 	path = require('path'),
-	events = require('events'),
-	Promise = require('bluebird'),
-	fse = Promise.promisifyAll(require('fs-extra'));
+	events = require('events');
 
 var BaseClass = require('../lib/BaseClass.js');
 

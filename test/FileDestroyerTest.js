@@ -1,11 +1,12 @@
 /*jshint expr: true*/
 'use strict';
 
+process.env.NODE_ENV = 'test';
+
 // =======================================================================
 // Test Setup
 // =======================================================================
 var expect = require('chai').expect,
-	assert = require('chai').assert,
 	path = require('path'),
 	Promise = require('bluebird'),
 	fse = Promise.promisifyAll(require('fs-extra'));
@@ -26,7 +27,7 @@ describe('FileDestroyer', function() {
 		appRoot = process.env.PWD,
 		libDir = appRoot + path.sep + 'lib' + path.sep,
 		modDir = appRoot + path.sep + 'modules' + path.sep,
-		moduleName = 'testModuleD';	
+		moduleName = 'testModuleD';
 	});
 
 	beforeEach(function(){
@@ -66,12 +67,21 @@ describe('FileDestroyer', function() {
 			fd.destroyModule(moduleName);
 		});
 
-		// it('should return a "Module (Name) destroyed" message when successful', function(){
-		// 	var fd = new FileDestroyer();
+        it('should emit a "module.destroyed" message when the module folder is destroyed', function(done){
+            var fd = new FileDestroyer(),
+                emitterTriggered = false;
 
-		// 	fd.destroyModule(moduleName);
+            function callback() {
+                expect(emitterTriggered).to.be.true;
+            }
 
-		// });
+            fd.on('module.destroyed', function(){
+                emitterTriggered = true;
+                done();
+            }, callback);
+
+            fd.destroyModule(moduleName);
+        });
 
 	});
 

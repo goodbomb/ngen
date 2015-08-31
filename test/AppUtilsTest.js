@@ -1,13 +1,13 @@
 /*jshint expr: true*/
 'use strict';
 
+process.env.NODE_ENV = 'test';
+
 // =======================================================================
 // Test Setup
 // =======================================================================
 var expect = require('chai').expect,
-	assert = require('chai').assert,
 	path = require('path'),
-	events = require('events'),
 	Promise = require('bluebird'),
 	fse = Promise.promisifyAll(require('fs-extra'));
 
@@ -20,6 +20,23 @@ var AppUtils = require('../lib/AppUtils.js'),
 // =======================================================================
 describe('AppUtils', function() {
 
+    before(function() {
+        var srcDir = process.env.PWD + '/test/mock/app';
+        var destDir = process.env.PWD + '/app';
+
+        fse.copy(srcDir, destDir, function (err) {
+            if (err) {
+                console.error(err);
+            }
+        });
+    });
+
+    after(function() {
+        fse.remove(process.env.PWD + '/app', function (err) {
+            if (err) { console.error(err); }
+        });
+    });
+
 	describe('#getFileLocation()', function(){
 
 		after(function(done){
@@ -27,7 +44,7 @@ describe('AppUtils', function() {
 
 			fse.exists(file, function(){
 				fse.remove(file, function(err) {
-					if (err) console.error(err);
+					if (err) { console.error(err); }
 				}, done());
 			});
 		});
@@ -37,7 +54,7 @@ describe('AppUtils', function() {
 				filename = 'testFile.txt';
 
 			fse.writeFile(filename, 'Test File', function(err) {
-				if (err) console.error(err);
+				if (err) { console.error(err); }
 				expect(AppUtils.getFileLocation(filename)).to.equal(currentDir);
 			}, done());
 
@@ -61,6 +78,17 @@ describe('AppUtils', function() {
 		});
 
 	});
+
+    describe('#getAppName()', function() {
+
+        it('should return the angular app\'s name', function(){
+            var appName = 'myApp';
+
+            expect(AppUtils.getAppName()).to.not.equal('undefined');
+            expect(AppUtils.getAppName()).to.equal(appName);
+        });
+
+    });
 
 	describe('#generateTemplateFile()', function() {
 
