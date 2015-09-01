@@ -2,7 +2,7 @@
 
 'use strict';
 
-describe('{%MODULENAME%}Controller', function() {
+describe('{%CTRL_NAME%}Controller', function() {
 
     var ctrl, scope;
 
@@ -12,7 +12,7 @@ describe('{%MODULENAME%}Controller', function() {
 
         angular.mock.inject(function($controller, $rootScope) {
             scope = $rootScope.$new();
-            ctrl = $controller('{%MODULENAME%}Ctrl', {
+            ctrl = $controller('{%CTRL_NAME%}Ctrl', {
                 $scope: scope
             });
         });

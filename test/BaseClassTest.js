@@ -51,8 +51,8 @@ describe('BaseClass', function() {
 	describe('#getSrcPath()', function(){
 
 		it('should return the source path of a template file', function(){
-			var filename = 'config.tpl.js',
-				result = path.resolve(process.cwd() + '/src/templates/config.tpl.js');
+			var filename = 'index.tpl.js',
+				result = path.resolve(process.cwd() + '/src/templates/index.tpl.js');
 
 			expect(BaseClass.getSrcPath(filename)).to.equal(result);
 		});

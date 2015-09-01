@@ -1,8 +1,8 @@
 'use strict';
 
-function {%MODULENAME%}Ctrl() {
+function {%CTRL_NAME%}Ctrl() {
 
 }
 
-{%MODULENAME%}Ctrl.$inject = [];
-module.exports = {%MODULENAME%}Ctrl;
+{%CTRL_NAME%}Ctrl.$inject = [];
+module.exports = {%CTRL_NAME%}Ctrl;

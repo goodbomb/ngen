@@ -2,7 +2,7 @@
 
 module.exports = function directive() {
 	return {
-		controller: '{%MODULENAME%}Ctrl',
+		controller: '{%CTRL_NAME%}Ctrl',
 		template: require('./{%MODULENAME%}.html'),
 		restrict: 'A',
 		transclude: true,
